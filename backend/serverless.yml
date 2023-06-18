@@ -44,7 +44,7 @@ provider:
 
 functions:
   createPresignedPost:
-    handler: backend/createPresignedPost.handler
+    handler: createPresignedPost.handler
     events:
       - http:
           method: post
