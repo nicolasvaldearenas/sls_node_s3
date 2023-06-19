@@ -10,6 +10,12 @@ provider:
   stage: dev
   region: us-east-1
 
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -99,6 +105,23 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: !Sub ${self:service}-uploads
+        AccessControl: Private
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+              AllowedOrigins:
+                - "*"
+              MaxAge: "3600"
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
