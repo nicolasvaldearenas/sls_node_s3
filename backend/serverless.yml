@@ -16,6 +16,13 @@ provider:
         - s3:*
       Resource: "*"
 
+layers:
+  filesize:
+    name: ${self:service}-filesize-layer-${self:provider.stage}
+    path: ./layers/filesize-layer
+    compatibleRuntimes:
+      - nodejs18.x
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -50,11 +57,31 @@ provider:
 
 functions:
   createPresignedPost:
-    handler: createPresignedPost.handler
+    handler: functions/createPresignedPost.handler
     events:
       - http:
           method: post
           path: upload
+          cors: true
+    environment:
+      BUCKET_NAME: !Ref Uploads
+  getFilesList:
+    handler: functions/getFilesList.handler
+    events:
+      - http:
+          method: get
+          path: files
+          cors: true
+    environment:
+      BUCKET_NAME: !Ref Uploads
+    layers:
+      - !Ref FilesizeLambdaLayer
+  downloadFile:
+    handler: functions/downloadFile.handler
+    events:
+      - http:
+          method: get
+          path: download/{fileKey}
           cors: true
     environment:
       BUCKET_NAME: !Ref Uploads
