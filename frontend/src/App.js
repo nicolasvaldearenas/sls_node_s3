@@ -25,7 +25,7 @@ const App = () => {
   const getFilesList = async () => {
     await axios({
       method: "get",
-      url: "https://ti28z9r6c8.execute-api.us-east-1.amazonaws.com/dev/files",
+      url: `${process.env.REACT_APP_APIGATEWAY}/files`,
     }).then((data) => {
       setFilesList(data);
     });
@@ -45,7 +45,7 @@ const App = () => {
 
     const data = await axios({
       method: "post",
-      url: "https://ti28z9r6c8.execute-api.us-east-1.amazonaws.com/dev/upload",
+      url: `${process.env.REACT_APP_APIGATEWAY}/upload`,
       data: {
         filename: file.split("\\").pop(),
       },
@@ -95,7 +95,7 @@ const App = () => {
                         await axios({
                           method: "get",
                           url:
-                            "https://ti28z9r6c8.execute-api.us-east-1.amazonaws.com/dev/download/" +
+                            `${process.env.REACT_APP_APIGATEWAY}/download/` +
                             f.Key,
                         }).then(async (response) => {
                           window.open(response.data, "_blank");
