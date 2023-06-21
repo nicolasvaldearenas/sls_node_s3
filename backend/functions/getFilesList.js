@@ -10,7 +10,6 @@ module.exports.handler = async (event) => {
   });
 
   const bucketObjects = await s3Client.send(command);
-  console.log("bucketObjects => ", bucketObjects);
 
   const filesData = bucketObjects.Contents.map((o) => {
     return {
